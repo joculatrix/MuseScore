@@ -36,6 +36,10 @@ class TextLineSettingsModel : public InspectorModelWithVoiceAndPositionOptions
 
     Q_PROPERTY(PropertyItem * lineStyle READ lineStyle CONSTANT)
 
+    Q_PROPERTY(PropertyItem * fontFamily READ fontFamily CONSTANT)
+    Q_PROPERTY(PropertyItem * fontStyle READ fontStyle CONSTANT)
+    Q_PROPERTY(PropertyItem * fontSize READ fontSize CONSTANT)
+
     Q_PROPERTY(PropertyItem * thickness READ thickness CONSTANT)
     Q_PROPERTY(PropertyItem * dashLineLength READ dashLineLength CONSTANT)
     Q_PROPERTY(PropertyItem * dashGapLength READ dashGapLength CONSTANT)
@@ -65,6 +69,10 @@ public:
     PropertyItem* allowDiagonal() const;
 
     PropertyItem* lineStyle() const;
+
+    PropertyItem* fontFamily() const;
+    PropertyItem* fontStyle() const;
+    PropertyItem* fontSize() const;
 
     PropertyItem* thickness() const;
     PropertyItem* dashLineLength() const;
@@ -131,6 +139,10 @@ private:
 
     PropertyItem* m_lineStyle = nullptr;
     PropertyItem* m_placement = nullptr;
+
+    PropertyItem* m_fontFamily = nullptr;
+    PropertyItem* m_fontStyle = nullptr;
+    PropertyItem* m_fontSize = nullptr;
 
     PropertyItem* m_thickness = nullptr;
     PropertyItem* m_dashLineLength = nullptr;

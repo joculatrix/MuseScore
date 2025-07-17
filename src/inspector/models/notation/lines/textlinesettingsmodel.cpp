@@ -73,6 +73,10 @@ void TextLineSettingsModel::createProperties()
     m_isLineVisible = buildPropertyItem(Pid::LINE_VISIBLE, applyPropertyValueAndUpdateAvailability);
     m_isLineVisible->setIsVisible(false);
 
+    m_fontFamily = buildPropertyItem(mu::engraving::Pid::FONT_FACE);
+    m_fontStyle = buildPropertyItem(mu::engraving::Pid::FONT_STYLE);
+    m_fontSize = buildPropertyItem(mu::engraving::Pid::FONT_SIZE);
+
     m_allowDiagonal = buildPropertyItem(Pid::DIAGONAL);
     m_allowDiagonal->setIsVisible(false);
 
@@ -110,6 +114,9 @@ void TextLineSettingsModel::loadProperties()
         Pid::LINE_VISIBLE,
         Pid::DIAGONAL,
         Pid::LINE_STYLE,
+        Pid::FONT_FACE,
+        Pid::FONT_STYLE,
+        Pid::FONT_SIZE,
         Pid::BEGIN_HOOK_TYPE,
         Pid::END_HOOK_TYPE,
         Pid::LINE_WIDTH,
@@ -138,6 +145,9 @@ void TextLineSettingsModel::resetProperties()
         m_isLineVisible,
         m_allowDiagonal,
         m_lineStyle,
+        m_fontFamily,
+        m_fontStyle,
+        m_fontSize,
         m_thickness,
         m_dashLineLength,
         m_dashGapLength,
@@ -175,6 +185,21 @@ PropertyItem* TextLineSettingsModel::allowDiagonal() const
 PropertyItem* TextLineSettingsModel::lineStyle() const
 {
     return m_lineStyle;
+}
+
+PropertyItem* TextLineSettingsModel::fontFamily() const
+{
+    return m_fontFamily;
+}
+
+PropertyItem* TextLineSettingsModel::fontStyle() const
+{
+    return m_fontStyle;
+}
+
+PropertyItem* TextLineSettingsModel::fontSize() const
+{
+    return m_fontSize;
 }
 
 PropertyItem* TextLineSettingsModel::thickness() const
@@ -341,6 +366,33 @@ void TextLineSettingsModel::loadProperties(const PropertyIdSet& propertyIdSet)
 
     if (muse::contains(propertyIdSet, Pid::LINE_STYLE)) {
         loadPropertyItem(m_lineStyle);
+    }
+
+    if (muse::contains(propertyIdSet, Pid::FONT_FACE)) {
+        loadPropertyItem(m_fontFamily, [](const QVariant& elementPropertyValue) -> QVariant {
+            return elementPropertyValue.toString() == mu::engraving::TextLineBase::UNDEFINED_FONT_FAMILY
+                   ? QVariant() : elementPropertyValue.toString();
+        });
+
+        m_fontFamily->setIsEnabled(true);
+    }
+
+    if (muse::contains(propertyIdSet, Pid::FONT_STYLE)) {
+        loadPropertyItem(m_fontStyle, [](const QVariant& elementPropertyValue) -> QVariant {
+            return elementPropertyValue.toInt() == static_cast<int>(mu::engraving::FontStyle::Undefined)
+                   ? QVariant() : elementPropertyValue.toInt();
+        });
+
+        m_fontStyle->setIsEnabled(true);
+    }
+
+    if (muse::contains(propertyIdSet, Pid::FONT_SIZE)) {
+        loadPropertyItem(m_fontSize, [](const QVariant& elementPropertyValue) -> QVariant {
+            return muse::RealIsEqual(elementPropertyValue.toDouble(), mu::engraving::TextLineBase::UNDEFINED_FONT_SIZE)
+                   ? QVariant() : elementPropertyValue.toDouble();
+        });
+
+        m_fontSize->setIsEnabled(true);
     }
 
     if (muse::contains(propertyIdSet, Pid::LINE_WIDTH)) {

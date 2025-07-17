@@ -136,6 +136,9 @@ public:
 
     static const std::array<Pid, 27>& textLineBasePropertyIds();
 
+    static const String UNDEFINED_FONT_FAMILY;
+    static const double UNDEFINED_FONT_SIZE;
+
     void reset() override;
 
 protected:

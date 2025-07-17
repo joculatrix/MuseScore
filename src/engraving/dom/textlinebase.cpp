@@ -195,6 +195,9 @@ EngravingItem* TextLineBaseSegment::propertyDelegate(Pid pid)
 //   TextLineBase
 //---------------------------------------------------------
 
+const String TextLineBase::UNDEFINED_FONT_FAMILY = String(u"Undefined");
+const double TextLineBase::UNDEFINED_FONT_SIZE = -1.0;
+
 TextLineBase::TextLineBase(const ElementType& type, EngravingItem* parent, ElementFlags f)
     : SLine(type, parent, f)
 {
